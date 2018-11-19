@@ -14,105 +14,100 @@ client.on('ready', () => {
 
 
 
-client.on('guildMemberAdd', member => {
-    let channel = member.guild.channels.find('name', 'chat');
-    let memberavatar = member.user.avatarURL
-      if (!channel) return;
-    let embed = new Discord.RichEmbed()
-        .setColor('RANDOM')
-        .setThumbnail(memberavatar)
-        .addField(':running_shirt_with_sash: | name :  ',`${member}`)
-        .addField(':loudspeaker: | نورت السيرفر يا قلبي' , `Welcome to the server, ${member}`)
-        .addField(':id: | user :', "**[" + `${member.id}` + "]**" )
-                .addField('➡| انت العضو رقم',`${member.guild.memberCount}`)
-               
-                  .addField("Name:",`<@` + `${member.id}` + `>`, true)
-                     
-                                     .addField(' الـسيرفر', `${member.guild.name}`,true)
-                                       
-     .setFooter(`${member.guild.name}`)
-        .setTimestamp()
-   
-      channel.sendEmbed(embed);
+
+
+
+
+ 
+
+Save New Duplicate & Edit Just Text Twitter
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+
+
+
+client.on('guildMemberAdd', Ammar=> {
+    var embed = new Discord.RichEmbed()
+    .setTitle('عضو جديد!')
+    .setDescription('مرحبا بك بالسيرفر')
+    .addField('``ايدي العضو``:',"" +  Ammar.user.id, true)
+    .addField('``تاق العضو``', Ammar.user.discriminator, true)
+    .addField('``تم الانشاء في``', Ammar.user.createdAt, true)
+    .addField(' 👤  انت رقم',`**[ ${Ammar.guild.memberCount} ]**`,true)
+    .setColor('RANDOM')
+    .setFooter(Ammar.guild.name, Ammar.guild.iconURL, true)
+    var channel =Ammar.guild.channels.find('name', 'chat')
+    if (!channel) return;
+    channel.send({embed : embed});
     });
 
-client.on("ready", () => {
+const invites = {};
 
-    var guild;
+const wait = require('util').promisify(setTimeout);
 
-    while (!guild)
+client.on('ready', () => {
+  wait(1000);
 
-        guild = client.guilds.get("431132860523741184");
-
-    guild.fetchInvites().then((data) => {
-
-        data.forEach((Invite, key, map) => {
-
-            var Inv = Invite.code;
-
-            dat[Inv] = Invite.uses;
-
-        });
-
-    });
-
+  client.guilds.forEach(g => {
+    g.fetchInvites().then(guildInvites => {
+      invites[g.id] = guildInvites;
+    });
+  });
 });
 
- 
-
- 
-
- 
-
-client.on("guildMemberAdd", (member) => {
-
-    let channel = member.guild.channels.get("511551397888524318");
-
-    if (!channel) {
-
-        console.log("!the channel id it's not correct");
-
-        return;
-
-    }
-
-    if (member.id == client.user.id) {
-
-        return;
-
-    }
-
-    console.log('-');
-
-    var guild;
-
-    while (!guild)
-
-        guild = client.guilds.get("431132860523741184");
-
-    guild.fetchInvites().then((data) => {
-
-        data.forEach((Invite, key, map) => {
-
-            var Inv = Invite.code;
-
-            if (dat[Inv])
-
-                if (dat[Inv] < Invite.uses) {
-
- channel.send(`تم دعوته بواسطة  ${Invite.inviter} `) ;        
-
- }
-
-            dat[Inv] = Invite.uses;
-
-       
-
-       });
-
-    });
-
+client.on('guildMemberAdd', member => {
+  member.guild.fetchInvites().then(guildInvites => {
+    const ei = invites[member.guild.id];
+    invites[member.guild.id] = guildInvites;
+    const invite = guildInvites.find(i => ei.get(i.code).uses < i.uses);
+    const inviter = client.users.get(invite.inviter.id);
+    const logChannel = member.guild.channels.find(channel => channel.name === "chat");
+    logChannel.send(`Invited by: < @${inviter.tag} >`);
+  });
 });
+ 
+
+ 
 
 
 
