@@ -140,35 +140,6 @@ message.author.send(`**مدة الرابط : يوم
 
 
 
-let args = message.content.split(' ').slice(1)
-if(message.content.startsWith(prefix + 'setGame')) {
-    if(message.author.id != '400955088052420610') return;
-    else {
-    client.user.setGame(args.join(' '));
-}
-}
-if(message.content.startsWith(prefix + 'setStreaming')) {
-    if(message.author.id != '400955088052420610') return;
-    else {
-    client.user.setActivity(args.join(' '), {type: 'STREAMING', url:'https://www.twitch.tv/idk'});
-}
-}
-if(message.content.startsWith(prefix + 'setListening')) {
-    if(message.author.id != '400955088052420610') return;
-    else {
-    client.user.setActivity(args.join(' '), {type: 'LISTENING'});
-}
-}
-if(message.content.startsWith(prefix + 'setWatching')) {
-    if(message.author.id != '400955088052420610') return;
-    else {
-    client.user.setActivity(args.join(' '), {type: 'WATCHING'});
-}
-}
-
-            
-
-
 
 
 
